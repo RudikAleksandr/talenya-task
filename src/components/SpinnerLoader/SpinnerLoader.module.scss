@@ -1,0 +1,32 @@
+.root {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+  margin: auto;
+}
+
+.loader,
+.loader:after {
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+}
+
+.loader {
+  font-size: 15px;
+  border-top: 8px solid  #CECFD1;
+  border-right: 8px solid #CECFD1;
+  border-bottom: 8px solid #CECFD1;
+  border-left: 8px solid rgb(59, 64, 71);
+  transform: translateZ(0);
+  animation: load 1s infinite linear;
+}
+
+@keyframes load {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

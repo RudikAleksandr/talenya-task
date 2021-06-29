@@ -1,3 +1,37 @@
+# Required steps to add a new service
+
+To add a new service, you need to create a class and implement one of the interfaces **ResourceServiceLoadByKeyWords**, **ResourceServiceLoadByUrl** or both. Depending on whether you need to make a search by URL and keywords in the service.
+
+Service example:
+```
+import {
+  Resource, ResourceServiceLoadByKeyWords, ResourceServiceLoadByUrl, YouTubeResource,
+} from '../entities/resourcesEntities';
+import { YOU_TUBE_CONTENT_URL } from '../config';
+import youTubeAPI from '../api/youTubeAPI';
+
+class YouTubeService implements ResourceServiceLoadByKeyWords, ResourceServiceLoadByUrl {
+  async loadResourcesByKeyWords(keyWords: string): Promise<Resource[]> {...}
+
+  getIdByParsingResourceUrl(resourceUrl: string): string | null {...}
+
+  getResourceContentUrl(resourceId: string): string {...}
+}
+```
+
+Then, in the *resourcesSlice.ts* file, you need to create an instance of the service class and pass the service to **ResourcesService** constructor
+
+Example of adding a service:
+```
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Resource, ResourcesState } from '../../entities/resourcesEntities';
+import ResourcesService from '../../services/ResourcesService';
+import YouTubeService from '../../services/YouTubeService';
+
+const resourcesService = new ResourcesService([
+  new YouTubeService(),
+]);
+```
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

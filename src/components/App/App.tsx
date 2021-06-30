@@ -6,7 +6,10 @@ import ResourceContent from '../ResourceContent';
 
 const App: FC = (): ReactElement => (
   <Container>
-    <Row xs="2" className="flex-nowrap justify-content-center mt-4">
+    <Row
+      xs="2"
+      className="flex-nowrap justify-content-center mt-4"
+    >
       <ResourceSearch />
     </Row>
     <Row>

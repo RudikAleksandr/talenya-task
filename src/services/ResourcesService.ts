@@ -4,14 +4,15 @@ import {
 
 export default class ResourcesService {
   constructor(private resourceServiceList: (
-    ResourceServiceLoadByKeyWords & ResourceServiceLoadByUrl
+    ResourceServiceLoadByKeyWords | ResourceServiceLoadByUrl |
+    (ResourceServiceLoadByKeyWords & ResourceServiceLoadByUrl)
   )[]) { }
 
   loadResourcesByKeyWords(keyWords: string): Promise<Resource[]> {
     const promiseResourceList: Promise<Resource[]>[] = [];
 
     this.resourceServiceList.forEach((resourceService) => {
-      if (resourceService.loadResourcesByKeyWords) {
+      if ('loadResourcesByKeyWords' in resourceService) {
         promiseResourceList.push(resourceService.loadResourcesByKeyWords(keyWords));
       }
     });
@@ -23,12 +24,12 @@ export default class ResourcesService {
     let resourceId: string | null | undefined;
 
     const resourceService = this.resourceServiceList.find((resourceServiceItem) => {
-      resourceId = resourceServiceItem.getIdByParsingResourceUrl
-        && resourceServiceItem.getIdByParsingResourceUrl(resourceUrl);
+      resourceId = 'getIdByParsingResourceUrl' in resourceServiceItem
+        ? resourceServiceItem.getIdByParsingResourceUrl(resourceUrl) : null;
       return !!resourceId;
     });
 
-    if (resourceService) {
+    if (resourceService && 'getResourceContentUrl' in resourceService) {
       return resourceService.getResourceContentUrl(resourceId as string);
     }
 
